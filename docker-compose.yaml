@@ -1,0 +1,40 @@
+services:
+  postgres-source:
+    image: postgres:13
+    container_name: 'postgres-demo'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB_SOURCE}
+    volumes:
+      - ./source-db-volume:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    ports:
+      - 6542:5432
+    healthcheck:
+      test: ["CMD", "pg_isready -U postgres -d ${POSTGRES_DB_SOURCE}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+  postgres-raw:
+    image: postgres:13
+    container_name: 'dwh-kimball'
+    environment:
+      POSTGRES_USER: dwh
+      POSTGRES_PASSWORD: dwh
+      POSTGRES_DB: ${POSTGRES_DB_DWH}
+    volumes:
+      - ./dwh-db-volume:/var/lib/postgresql/data
+    ports:
+      - 6543:5432
+    healthcheck:
+      test: ["CMD", "pg_isready -U dwh -d ${POSTGRES_DB_DWH}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+volumes:
+  dwh-db-volume:
+  source-db-volume:
