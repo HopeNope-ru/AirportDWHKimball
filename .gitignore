@@ -2,6 +2,6 @@
 dwh-db-volume
 ./source-db-volume
 source-db-volume
+
 ./init/demo-big-20170815.sql
-./init/*
-./init
+init/demo-big-20170815.sql
