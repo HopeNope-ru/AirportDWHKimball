@@ -2,5 +2,4 @@
 dwh-db-volume
 ./source-db-volume
 source-db-volume
-./init/*.sql
-/init/*.sql
+init/*.sql
